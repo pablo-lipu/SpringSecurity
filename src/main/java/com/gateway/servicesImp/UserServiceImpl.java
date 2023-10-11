@@ -61,16 +61,18 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	@Transactional
 	public void updteRole(Role newRole, Long id) {
-		// Aqui debo actualizar el rol k me envien con ese usuario	
-		Optional<User> userYes = userRepository.findById(id); // Buscar por nombre de usuario
-		if (!userYes.isEmpty()) {
-			System.out.println("si encontre al usuario k hay k actualizarlo:    " + userYes.get().getNombre() + "  **************************");
-			userYes.get().setRole(newRole);//Seteo el nuevo rol
-			User rolUserSave = userRepository.save(userYes.get());
-			System.out.println("rol de:" + "" + " actualizado");
-		}
-		// Validar si el usuario k intenta actualizar el rol esta con Rol ADMIN
+	    // Aqui debo actualizar el rol k me envien con ese usuario    
+	    Optional<User> userYes = userRepository.findById(id); // Buscar por nombre de usuario
+	    if (userYes.isPresent()) {
+	        System.out.println("si encontre al usuario k hay k actualizarlo:    " 
+	            + userYes.get().getNombre() + "  **************************");
+	        userYes.get().setRole(newRole); // Seteo el nuevo rol
+	        User rolUserSave = userRepository.save(userYes.get());
+	        System.out.println("rol de:" + "" + " actualizado");
+	    }
+	    // Validar si el usuario k intenta actualizar el rol esta con Rol ADMIN
 	}
+
 
 	@Override
 	public User findByUsernameReturnToken(String username) {

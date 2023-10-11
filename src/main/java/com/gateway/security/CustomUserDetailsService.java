@@ -1,5 +1,6 @@
 package com.gateway.security;
 
+import java.util.Collections;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service;
 import com.gateway.models.User;
 import com.gateway.services.IUserService;
 import com.gateway.utils.SecurityUtils;
+
+
+
 @Service
 
 /**
@@ -34,6 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {// Pesoanli
 	 * @param nombre del usuario
 	 * @return
 	 */
+    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     	/*
@@ -41,15 +46,20 @@ public class CustomUserDetailsService implements UserDetailsService {// Pesoanli
 		 * realizo mi busqueda de usuario y su data completa con mi metodo del servicio
 		 * que se conecta con mi base de datos
 		 */
-        User user = iUserService.findByUsername(username)
+    	
+       User user = iUserService.findByUsername(username)
                 .orElseThrow( () -> new UsernameNotFoundException("El usuario no fue encontrado:"+username));
     	/*
 		 * Obtengo solo los roles k tiene El usuario puede tener un o varios roles los
 		 * almaceno en una coleccion, donde no se repetiran los datos. vienen de la base datos
-		 */
-        Set<GrantedAuthority> authorities = Set.of(SecurityUtils.convertToAuthority(user.getRole().name()));
+		 * Set<GrantedAuthority> authorities = Collections.singleton(SecurityUtils.convertToAuthority(user.getRole().name()));
 
-        UserPrincipal  userPrincipal = new  UserPrincipal();
+		 */
+        
+        // Set<GrantedAuthority> authorities = Set.of(SecurityUtils.convertToAuthority(user.getRole().name()));
+        Set<GrantedAuthority> authorities = Collections.singleton(SecurityUtils.convertToAuthority(user.getRole().name()));
+
+        UserPrincipal userPrincipal = new UserPrincipal();
 		/*
 		 * tengo k aser es colocar setear el usuario actual k obtenga en el contexto
 		 * colocarlo en sesion dentro de mi app back para que en el futuro los request
@@ -63,8 +73,8 @@ public class CustomUserDetailsService implements UserDetailsService {// Pesoanli
 		userPrincipal.setUsername(user.getUsername());
 		userPrincipal.setPassword(user.getPassword());
 		userPrincipal.setAuthorities(authorities);
-        
-        
+//        
+//        
         return userPrincipal;
   
     }
