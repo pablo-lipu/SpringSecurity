@@ -51,7 +51,7 @@ public class SecurityConfig {
 	 * logueadas en mi app
 	 */
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
 		// Crear una referencia
 		auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder);

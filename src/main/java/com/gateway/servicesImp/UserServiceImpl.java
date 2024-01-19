@@ -34,6 +34,7 @@ public class UserServiceImpl implements IUserService {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setRole(Role.USER);
 		user.setFechaCreacion(LocalDateTime.now());
+		System.out.println(user.toString());
 		User userCreated = userRepository.save(user);
 		//agregar el token para enviarlo al cliente
 		String jwt = iJwtProvider.generateToken(userCreated);
